@@ -168,6 +168,18 @@ class MoveLeadParagraphTransform implements IMobileTransform {
 			if ( $leadParagraph && $isTopLevelInfobox &&
 				$this->isPreviousSibling( $infobox, $leadParagraph )
 			) {
+				$nodesToMove = [];
+				$lastMovedElement = $infobox;
+				do {
+					$lastMovedElement = $lastMovedElement->nextSibling;
+					$classAttribute = $lastMovedElement->hasAttributes()
+						? $lastMovedElement->attributes->getNamedItem('class')
+						: null;
+					if ($classAttribute !== null && preg_match('/\bnotice\b/', $classAttribute->nodeValue)) {
+						$nodesToMove[] = $lastMovedElement;
+					}
+				} while ( !$lastMovedElement->isSameNode( $leadParagraph ) );
+
 				$listElementAfterParagraph = null;
 				$where = $infobox;
 
@@ -180,9 +192,12 @@ class MoveLeadParagraphTransform implements IMobileTransform {
 					}
 				}
 
-				$leadSectionBody->insertBefore( $leadParagraph, $where );
+				foreach ($nodesToMove as $node) {
+					$leadSectionBody->insertBefore( $node, $where );
+				}
+
 				if ( $listElementAfterParagraph !== null ) {
-					$leadSectionBody->insertBefore( $listElementAfterParagraph, $where );
+					//$leadSectionBody->insertBefore( $listElementAfterParagraph, $where );
 				}
 			} elseif ( !$isTopLevelInfobox ) {
 				$isInWrongPlace = $this->hasNoNonEmptyPrecedingParagraphs( $xPath,
