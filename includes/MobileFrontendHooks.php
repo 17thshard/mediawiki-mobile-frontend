@@ -398,7 +398,7 @@ class MobileFrontendHooks {
 		if ( $ctx->shouldDisplayMobileView() ) {
 			$services = MediaWikiServices::getInstance();
 			$config = $services->getService( 'MobileFrontend.Config' );
-			unset( $pages[ 'MediaWiki:Common.css' ] );
+			// unset( $pages[ 'MediaWiki:Common.css' ] );
 			unset( $pages[ 'MediaWiki:Print.css' ] );
 			// MediaWiki:<skinname>.css suffers from the same problems as MediaWiki:Common.css
 			// in that it has traditionally been written for desktop skins and is bloated.
@@ -423,7 +423,7 @@ class MobileFrontendHooks {
 		$services = MediaWikiServices::getInstance();
 		$config = $services->getService( 'MobileFrontend.Config' );
 		if ( $ctx->shouldDisplayMobileView() ) {
-			unset( $pages[ 'MediaWiki:Common.js' ] );
+			// unset( $pages[ 'MediaWiki:Common.js' ] );
 			$pages[ 'MediaWiki:Mobile.js' ] = [ 'type' => 'script' ];
 			if ( !$config->get( 'MFSiteStylesRenderBlocking' ) ) {
 				$pages[' MediaWiki:Mobile.css' ] = [ 'type' => 'style' ];
